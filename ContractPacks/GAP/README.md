@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Giving Aircraft Purpose (GAP)
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Aviation contracts for KSP including milestones, rescue missions, marketplace deliveries, stunts, and various flight operations.
 
 ## Installation
 

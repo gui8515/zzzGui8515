@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Constellations
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Satellite constellation contracts including relay networks, sentinel satellites, marker beacons, and station-keeping operations.
 
 ## Installation
 

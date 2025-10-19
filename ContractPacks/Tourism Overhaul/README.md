@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Tourism Overhaul
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+An extensive overhaul of tourism contracts including local, interplanetary, and interstellar tourist destinations with hotels and attractions.
 
 ## Installation
 

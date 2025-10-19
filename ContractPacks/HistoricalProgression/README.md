@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Historical Progression
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Contracts based on historical space missions from the early space age through Apollo, Gemini, Space Shuttle, and ISS programs.
 
 ## Installation
 

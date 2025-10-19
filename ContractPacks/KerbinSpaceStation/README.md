@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Kerbin Space Station / Bases and Stations
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Contracts for building and maintaining space stations and planetary bases, including resupply missions, crew rotations, and expansion projects.
 
 ## Installation
 

@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Anomaly Surveyor
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Contracts for discovering and surveying anomalies across the solar system including monoliths, pyramids, UFOs, and other mysterious structures.
 
 ## Installation
 

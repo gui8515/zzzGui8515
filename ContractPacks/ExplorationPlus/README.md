@@ -1,10 +1,18 @@
-# Kerbal Academy
+# ExplorationPlus
 
-A Contract Pack for Kerbal Space Program.
+A Contract Pack for Kerbal Space Program that provides exploration-focused contracts.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+This mod provides contracts that guide players through major space exploration milestones including first steps, orbital maneuvers, flybys, and landings.
+
+## Features
+
+- First Steps contracts for early missions
+- Orbital maneuvering challenges
+- Flyby missions
+- Landing contracts
+- Historical mission-inspired contracts (Apollo, Gemini)
 
 ## Installation
 

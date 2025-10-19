@@ -1,10 +1,10 @@
-# Kerbal Academy
+# RAD
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+This mod provides contracts for Kerbal Space Program career mode.
 
 ## Installation
 
