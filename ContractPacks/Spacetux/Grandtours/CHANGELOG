@@ -1,0 +1,7 @@
+Version 0.1.0 - Initial Release
+	Contracts for Grand Tour Missions
+Version 0.1.1 - Updated AVC file
+Version 0.1.2
+	Repackaged to include SpaceTuxSA in same zip file, to accomodate people who install by hand
+	Removed weight of 99
+	Added multiplers to the rewardFunds to make the contracts make more sense

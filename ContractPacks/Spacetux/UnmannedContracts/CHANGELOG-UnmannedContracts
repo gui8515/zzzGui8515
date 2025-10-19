@@ -1,0 +1,54 @@
+ 0.1.0 - Initial Release
+	Contracts for unmanned missions to the Mun
+ 0.1.1 - Update for weights
+	Weights were much too high, reduced to 10 on all except for the initial one
+	updated .version file for AVC
+ 0.1.2 - Updated rewards
+	Rewards were reduced, they were much too high
+ 0.2.0 - Minmus addition
+	Updated cancellable- Only the first contract in the Mun config should be uncancellable and undeclinable
+	Added CONTRACT_GROUP
+	Moved agency into separate cfg file
+	added group.cfg for the contract group
+	Added SpaceTuxGroup group to all contracts
+	Added Minmus contracts
+ 0.3.0 - MOAR contracts
+	Added contracts for all planetary bodies
+	Added requirement for  CoherentContracts
+ 0.3.1
+	Renamed CHANGELOG
+	Updated AVC
+ 0.3.4
+	Added missing parameters
+	Added RemoteTech requirements
+
+0.3.8	updated for 1.0.2
+0.3.10	updated weighting
+0.3.11	Fixed missing part for Minmus contracts
+0.3.12	Added missing VisitWaypoint parameter for the landing and impact contracts
+0.3.16	Updated deadlines to be more realistic
+0.3.17	Updated version file, bumped version
+0.3.18	Added dummy dll so that ModuleManager can know it's installed
+0.3.19	Major revamp of mod:
+		1.  Replaced the (literally) hundreds of contracts with 5, using additional 
+			functionality of CC to eliminate duplication of contracts
+		2.  Removed all hard-coded bodies, making this compatible with Kopernicus, 
+			including New Horizons (Kerbin is a moon)
+		3.  Removed AntennaRange and RemoteTech requirements.  Rather than require 
+			specific antennas for missions, will now let the player decide what to do.  
+			This will all the player to create satellite networks for coverage instead 
+			of relying on a single powerful antenna
+0.3.19.1
+	Updated version file for 1.1
+0.3.20
+	Updated version info
+0.3.21
+	Updated for new version of ContractConfigurator
+0.3.22
+	Added checks for impossible (in-game) Kolniya orbits
+	Added Tundra orbits
+0.3.23
+	Disabled Kolniya and Tundra orbits
+0.3.24
+	Enabled the Kolniya & Tundra orbits
+	Shortened some descriptions to fit in the Mission Control
