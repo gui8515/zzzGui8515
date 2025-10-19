@@ -119,7 +119,7 @@ All mods require:
 - **Contract Configurator** (minimum version varies by mod)
 
 Some mods have additional dependencies:
-- **SCANsat** - Required for CC-CP-SCANSat
+- **SCANSat** - Required for CC-CP-SCANSat
 - **Station Science** - Optional for some mods
 - **Strategia** - Optional integration for many mods
 
@@ -150,7 +150,7 @@ To add localized strings to any mod:
 
 ## Changelog
 
-### 2025-10-19 - Major Structure Refactoring
+### Major Structure Refactoring
 - Reorganized all 18 mods to follow standard KSP structure
 - Added localization framework (en-us, pt-br, es-es) to all mods
 - Organized contract files into Groups and Types subdirectories
