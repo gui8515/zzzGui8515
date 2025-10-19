@@ -1,10 +1,10 @@
-# Kerbal Academy
+# CommNet Relays
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Provides contracts for establishing communication relay networks around celestial bodies, including Lagrange points and high-orbit constellations.
 
 ## Installation
 

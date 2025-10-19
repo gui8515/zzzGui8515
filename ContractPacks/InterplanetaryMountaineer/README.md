@@ -1,10 +1,10 @@
-# Kerbal Academy
+# Interplanetary Mountaineer
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Challenge contracts for landing on the highest peaks and lowest valleys of various celestial bodies across the solar system.
 
 ## Installation
 

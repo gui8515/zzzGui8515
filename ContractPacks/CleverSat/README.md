@@ -1,10 +1,10 @@
-# Kerbal Academy
+# CleverSat
 
 A Contract Pack for Kerbal Space Program.
 
 ## Description
 
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
+Provides satellite constellation contracts including probe malfunctions, rogue AI scenarios, and orbital shifts.
 
 ## Installation
 
