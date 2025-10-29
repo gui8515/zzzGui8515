@@ -9,19 +9,33 @@
          "ALLOW_PRE_RELEASE":false
      },
      "VERSION":{
+<<<<<<< HEAD
          "MAJOR":2,
          "MINOR":11,
+=======
+         "MAJOR":1,
+         "MINOR":6,
+>>>>>>> cd04c20e4612ba5b972beee9455bae5c8be55fbb
          "PATCH":1,
          "BUILD":0
      },
      "KSP_VERSION":{
          "MAJOR":1,
+<<<<<<< HEAD
          "MINOR":12,
          "PATCH":5
      },
      "KSP_VERSION_MIN":{
          "MAJOR":1,
          "MINOR":12,
+=======
+         "MINOR":6,
+         "PATCH":1
+     },
+     "KSP_VERSION_MIN":{
+         "MAJOR":1,
+         "MINOR":4,
+>>>>>>> cd04c20e4612ba5b972beee9455bae5c8be55fbb
          "PATCH":0
      }
  } 
