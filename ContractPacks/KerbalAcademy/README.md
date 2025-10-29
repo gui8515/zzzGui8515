@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Kerbal-Academy-Contract-Pack
 Kerbal Academy Contract Pack for use with Contract Configurator by nightingale.
 Credit severedsolo for orginal concept and creation of Kerbal Academy up to version 1.1.8  
@@ -22,34 +21,3 @@ Kerbal Academy is entirely dependent on Contract Configurator by nightingale, an
 Contract Configurator can be found at:
 https://forum.kerbalspaceprogram.com/index.php?/topic/91625-142-contract-configurator-v1250-2018-04-15/&page=1
 Please follow the installation instructions supplied by nightingale for Contract Configurator
-=======
-# Kerbal Academy
-
-A Contract Pack for Kerbal Space Program.
-
-## Description
-
-Training contracts for Kerbals including boot camp, flight school, engineering school, and scientific principles courses.
-
-## Installation
-
-1. Install [Contract Configurator](https://forum.kerbalspaceprogram.com/index.php?/topic/91625-contract-configurator/) (required dependency)
-2. Extract this folder to your KSP `GameData/ContractPacks/` directory
-
-## Dependencies
-
-- Contract Configurator
-
-## License
-
-This mod is distributed under the terms specified in LICENSE.txt.
-
-## Localization
-
-This mod supports localization. Localization files can be found in the `Localization/` folder.
-
-Supported languages:
-- English (en-us)
-- Portuguese (pt-br)
-- Spanish (es-es)
->>>>>>> cd04c20e4612ba5b972beee9455bae5c8be55fbb

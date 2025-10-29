@@ -1,18 +1,8 @@
 CHANGELOG:
-<<<<<<< HEAD
 GAP 2.11
 - Code update for 1.12.0 through 1.12.5 KSP using KSP-RO's Contract Configurator 2.11 (matching GAP version to that of the minimum Contract Configurator).
 - Updated dependencies for Contract Configurator managed by Liasias, and updated Module Manager (See Read Me).
 - Confirmed testing of all contracts as working as designed, even in a heavily modded KSP running on Luna MultiPlayer.
-=======
-
-GAP 1.6.1
--  compatbility fixes for KSP 1.6.1.
-
-GAP 1.4.1
-- fixed flag icons for contracts
-- fixed versioning for GitHub, CKAN, SpaceDock, and AVC
->>>>>>> cd04c20e4612ba5b972beee9455bae5c8be55fbb
 
 GAP 1.4 
 - all KSC Airline flight contracts now check for launch site.
