@@ -1,0 +1,326 @@
+@CONTRACT_TYPE[StationCoreHabTech2]:NEEDS[Kopernicus,HabTech2]
+{
+	@PARAMETER[NewStation]
+	{
+		@PARAMETER[LKO]
+		{
+            %maxAltitude = @/targetBody1.IsSun() ? 113549713200 : @/targetBody1.SpaceAltitudeThreshold()
+		}
+	}
+}
+CONTRACT_TYPE:NEEDS[HabTech2]
+{
+    name = StationCoreHabTech2
+    group = BasesandStations
+    title = Launch the @/targetBody1 Space Station! (HabTech2)
+	genericTitle = Launch a New Space Station
+    description = In order to aid our efforts of exploring @/targetBody1 we'd like you to launch a space station.
+	genericDescription = We'd like you to deploy a new space station.
+    synopsis = Launch the @/targetBody1 Space Station!
+    completedMessage = Station Complete!
+    
+	// Contract min/max expiry in days.
+    minExpiry = 1
+    maxExpiry = 7
+    // Contract can be cancelled and declined.
+    cancellable = true
+    declinable = true
+    targetBody = @/targetBody1
+
+     maxSimultaneous = 3
+      
+    // Contract rewards - no science random other rewards.
+    rewardScience = 0
+    rewardReputation = Random(1.0, 10.0)
+    rewardFunds = Random(100000.0, 150000.0)
+    failureReputation = Random(1.0, 100.0)
+    failureFunds = 50000.0
+    advanceFunds = 50000.0
+
+    // Failsafe Data.
+    DATA
+    {
+        type = List<Vessel>
+		requiredValue = false
+        stations = AllVessels().Where(v => v.VesselType() == Station)
+    }
+    DATA
+    {
+        type = CelestialBody
+        requiredValue = true
+        uniquenessCheck = GROUP_ACTIVE
+        targetBody1 = OrbitedBodies().Where(body => @/stations.Where(v => v.CelestialBody() == body).Count() == 0).SelectUnique()
+		//targetBody1 = Kerbin
+		title = Must have orbited a Celestial Body, but not have any stations deployed.
+    }
+
+
+    //Checks all vessel parameters are correct
+    PARAMETER
+    {
+        name = NewStation
+        type = VesselParameterGroup
+        title = Launch a new Station Core into the specified orbit around @/targetBody1.
+        notes = The station must include 1 Docking Port and support 4 Kerbals.  This can be done in one launch, or multiple launches.
+
+		//Checks station is in orbit
+		PARAMETER
+        {
+            name = LKO
+            type = Orbit
+          
+			targetBody = @/targetBody1
+            situation = ORBITING
+			maxAltitude = @/targetBody1.IsSun() ? 113549713200 : @/targetBody1 == Gilly ? 16000 : @/targetBody1.SpaceAltitudeThreshold()
+        }
+
+        //Check for a Docking Port
+		PARAMETER
+		{
+			name = PartValidation
+			type = PartValidation
+			
+			partModule = ModuleDockingNode
+			minCount = 1
+		}
+		
+		//Check for crew capacity
+        PARAMETER
+        {
+            name = HabModuleChild
+            type = HasCrewCapacity
+			title = Support 4 Kerbals
+            
+			minCapacity = 4
+            
+        }
+		
+		//Checks that vessel can generate power, accepts solar panels or RTGs
+        PARAMETER
+        {
+            name = RTGSolar
+            type = Any
+            title = Have one of the following power generators
+
+            PARAMETER
+            {
+                name = PartValidationRTG
+                type = PartValidation
+				title = 1 or more solar panels
+				hideChildren = true
+
+                partModule = ModuleDeployableSolarPanel
+                minCount = 1
+            }
+                
+            PARAMETER
+            {
+                name = PartValidationSolar
+                type = PartValidation
+                title = 1 or more generators
+				hideChildren = true
+                
+                partModule = ModuleGenerator
+                minCount = 1
+            }
+			
+			PARAMETER:NEEDS[NearFutureSolar]
+			{
+				name = PartValidationNearFutureSolar
+				type = PartValidation
+				title = 1 or more curved solar panels
+				hideChildren = true
+				
+				partModule = ModuleCurvedSolarPanel
+				minCount = 1
+			}
+			
+			PARAMETER:NEEDS[NearFutureElectrical]
+			{
+				name = PartValidationNearFutureReactors
+				type = PartValidation
+				title = 1 or more fission reactors
+				hideChildren = true
+				partModule = FissionReactor
+				minCount = 1
+			}
+			
+			PARAMETER:NEEDS[NearFutureElectrical]
+			{
+				name = PartValidationNearFutureRTGs
+				type = PartValidation
+				title = 1 or more radioisotope generators
+				hideChildren = true
+				partModule = ModuleRadioisotopeGenerator
+				minCount = 1
+			}
+			
+			PARAMETER:NEEDS[Kopernicus]
+			{
+				name = PartValidationRTG
+                type = PartValidation
+                hideChildren = true
+                title = 1 or more solar panels
+                partModule = KopernicusSolarPanel
+                minCount = 1
+			}
+        }
+		//OPTIONAL Checks for cupola
+		PARAMETER
+        {
+            name = PartValidation
+            type = PartValidation
+            title = Include a cupola (not optional)
+			optional = true
+			hideChildren = true
+            
+// Can add multiple "part" lines here will match on ANY of them
+            part = ht2_moduleCupola
+
+            minCount = 1
+            
+        }
+		
+		//Checks for Supplies (USI Life Support)
+		PARAMETER:NEEDS[USILifeSupport]
+		{
+			name = Supplies
+			type = HasResource
+			title = Have Supplies on board your vessel
+			
+			resource = Supplies
+			minQuantity = 1
+		}
+		
+		//OPTIONAL Checks for science labs from various mods
+		PARAMETER
+		{
+			name = ScienceModuleValidation
+			type = Any
+			optional = true
+			completeInSequence = true
+			
+			PARAMETER
+			{
+				name = ScienceLab
+				type = PartValidation
+				title = Include a Mobile Processing Lab MPL-LG-2
+				rewardFunds = 75000.0
+				hideChildren = true
+				
+				partModule = ModuleScienceLab
+			}
+
+			PARAMETER:NEEDS[StationScience]
+			{
+				name = PartValidation
+				type = PartValidation
+				title = Include a TH-NKR Research Lab
+				rewardFunds = 85000.0
+				hideChildren = true
+				
+				part = StnSciLab
+			}
+			
+			PARAMETER:NEEDS[Kerbalism]
+			{
+				name = PartValidation
+				type = PartValidation
+				title = Include a Science Laboratory
+				rewardFunds = 75000.0
+				hideChildren = true
+
+				partModule = Laboratory
+			}
+		}
+		
+		PARAMETER
+		{
+			name = VesselIsType
+			type = VesselIsType
+			
+			vesselType = Station
+		}
+	
+	}
+
+	//Begins a 2-day countdown. Station must be in orbit for 2 days for contract to complete
+	PARAMETER
+	{
+		name = Duration
+		type = Duration
+		duration = 2d
+		preWaitText = Orbit time required:
+		waitingText = Time to completion: 
+		completionText = You survived!
+		startCriteria = PARAMETER_COMPLETION
+		parameter = NewStation
+	}
+	
+	
+	REQUIREMENT
+	{
+		name = PartModuleUnlocked
+		type = PartModuleUnlocked
+
+		partModule = ModuleDockingNode
+	}
+
+	REQUIREMENT
+	{
+		name = Any
+		type = Any
+	
+		REQUIREMENT
+		{
+			name = PartModuleUnlocked
+			type = PartModuleUnlocked
+			
+			partModule = ModuleDeployableSolarPanel
+		}
+		
+		//REQUIREMENT:NEEDS[Kopernicus]
+		//{
+		//	name = PartModuleUnlocked
+		//	type = PartModuleUnlocked
+		//	
+		//	partModule = KopernicusSolarPanel
+		//}
+		
+		REQUIREMENT:NEEDS[NearFutureSolar]
+		{
+			name = PartModuleUnlocked
+			type = PartModuleUnlocked
+			
+			partModule = ModuleCurvedSolarPanel
+		}	
+	}
+	
+	// REQUIREMENT
+	// {
+		// name = CompleteContract
+		// type = CompleteContract
+		// contractType = StationCore
+		// minCount = 0
+		// checkOnActiveContract = false
+		// cooldownDuration = 5d
+		// title = Must not have completed this contract in the last 5 days.
+	// }
+
+	REQUIREMENT
+	{
+		name = PartUnlocked
+		type = PartUnlocked
+		
+		part = crewCabin
+	}
+	
+	REQUIREMENT
+	{
+		name = SunCheck
+		type = Expression
+		expression = !@/targetBody1.IsSun()
+		title = Target body must not be the Sun
+	}
+}
+	

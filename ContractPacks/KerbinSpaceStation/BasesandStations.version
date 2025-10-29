@@ -1,0 +1,31 @@
+{
+  "NAME": "Contract Pack: Bases and Stations",
+  "URL": "http://ksp.spacetux.net/avc/BasesandStations",
+  "DOWNLOAD": "https://github.com/linuxgurugamer/KerbinSpaceStation/releases",
+  "GITHUB": {
+    "USERNAME": "linuxgurugamer",
+    "REPOSITORY": "KerbinSpaceStation"
+  },
+  "VERSION": {
+    "MAJOR": 3,
+    "MINOR": 7,
+    "PATCH": 3,
+    "BUILD": 3
+  },
+  "KSP_VERSION": {
+    "MAJOR": 1,
+    "MINOR": 12,
+    "PATCH": 2
+  },
+  "KSP_VERSION_MIN": {
+    "MAJOR": 1,
+    "MINOR": 9,
+    "PATCH": 1
+  },
+  "INSTALL_LOC_1": {
+    "NAME": "BasesandStations",
+    "PATH": "ContractPacks",
+    "DIRECTORY": "KerbinSpaceStation",
+    "FILE": "BasesandStations.version"
+  }
+}
