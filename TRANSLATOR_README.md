@@ -109,10 +109,31 @@ python test_translator.py
 
 ## Batch Processing
 
-To translate multiple files:
+### Using the provided batch script
+
+To translate all .cfg files in a directory and its subdirectories:
+```bash
+./batch_translate.sh ContractPacks/ModName
+```
+
+This will:
+- Find all .cfg files in the specified directory
+- Translate them in place
+- Show progress for each file
+- Report summary at the end
+
+### Manual batch processing
+
+For more control, you can use a shell loop:
 ```bash
 # Translate all .cfg files in a directory
 for file in ContractPacks/ModName/*.cfg; do
+    python translate_contracts.py "$file" --in-place
+done
+
+# Translate with backup
+for file in ContractPacks/ModName/*.cfg; do
+    cp "$file" "$file.backup"
     python translate_contracts.py "$file" --in-place
 done
 ```
