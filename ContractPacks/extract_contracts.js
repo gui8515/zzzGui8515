@@ -1,5 +1,6 @@
 // extract_contracts.js
 // Uso: node extract_contracts.js /caminho/para/pasta
+// Node >= 12+
 
 const fs = require("fs").promises;
 const path = require("path");
@@ -25,7 +26,7 @@ async function walkDir(dir) {
   return files;
 }
 
-// Parser robusto de blocos CONTRACT_TYPE / CONTRACT_GROUP
+// Extrai blocos CONTRACT_TYPE e CONTRACT_GROUP (suporta espaços e quebras de linha)
 function extractBlocks(text) {
   const results = [];
   const regex = /(CONTRACT_TYPE|CONTRACT_GROUP)\s*\{/gi;
@@ -33,7 +34,7 @@ function extractBlocks(text) {
 
   while ((match = regex.exec(text))) {
     const type = match[1].toUpperCase();
-    const braceStart = match.index + match[0].indexOf("{");
+    const braceStart = text.indexOf("{", match.index);
     let depth = 0;
     let endIndex = -1;
 
@@ -59,16 +60,16 @@ function extractBlocks(text) {
   return results;
 }
 
-function extractNameFromBlock(block) {
-  const nameRegex = /name\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s#{}]+))/i;
-  const m = block.match(nameRegex);
+function extractField(block, field) {
+  const regex = new RegExp(`${field}\\s*=\\s*(?:"([^"]+)"|'([^']+)'|([^\\s#{}]+))`, "i");
+  const m = block.match(regex);
   return m ? m[1] || m[2] || m[3] : null;
 }
 
 function makeSafeFilename(name) {
   return (
     name
-      .replace(/[<>:"\/\\|?*\s]+/g, "_")
+      .replace(/[<>:"/\\|?*\s]+/g, "_")
       .replace(/_+/g, "_")
       .replace(/^_+|_+$/g, "") || name
   );
@@ -94,10 +95,8 @@ async function processFolder(rootPath) {
 
   for (const file of files) {
     const baseFileName = path.basename(file, ".cfg");
-    const outContractDir = path.join(contractsRoot, baseFileName);
-    await ensureDir(outContractDir);
-
     let content;
+
     try {
       content = await fs.readFile(file, "utf8");
     } catch (e) {
@@ -112,7 +111,7 @@ async function processFolder(rootPath) {
     }
 
     for (const { type, block } of blocks) {
-      let name = extractNameFromBlock(block);
+      let name = extractField(block, "name");
       if (!name) {
         const hash = crypto
           .createHash("md5")
@@ -121,16 +120,23 @@ async function processFolder(rootPath) {
           .slice(0, 8);
         name = `${type.toLowerCase()}_${hash}`;
       }
+      const safeName = makeSafeFilename(name);
 
-      const safe = makeSafeFilename(name);
       let outPath;
-
-      if (type === "CONTRACT_TYPE") {
-        outPath = path.join(outContractDir, `${safe}.cfg`);
+      if (type === "CONTRACT_GROUP") {
+        // === Grupos ===
+        outPath = path.join(groupsRoot, `${safeName}.cfg`);
       } else {
-        outPath = path.join(groupsRoot, `${safe}.cfg`);
+        // === Contratos ===
+        let group = extractField(block, "group") || "_ungrouped";
+        const safeGroup = makeSafeFilename(group);
+        const baseFileNameSafe = makeSafeFilename(baseFileName);
+        const groupDir = path.join(contractsRoot, safeGroup, baseFileNameSafe);
+        await ensureDir(groupDir);
+        outPath = path.join(groupDir, `${safeName}.cfg`);
       }
 
+      // Evitar sobrescrita (a menos que idêntico)
       let counter = 1;
       while (await fileExists(outPath)) {
         const existing = await fs.readFile(outPath, "utf8").catch(() => "");
@@ -143,7 +149,12 @@ async function processFolder(rootPath) {
 
       try {
         await fs.writeFile(outPath, block, "utf8");
-        console.log(`✅ Salvo: ${path.relative(process.cwd(), outPath)} (${type}, name="${name}")`);
+        console.log(
+          `✅ Salvo: ${path.relative(
+            process.cwd(),
+            outPath
+          )} (${type}, name="${name}")`
+        );
       } catch (e) {
         console.warn(`⚠️ Erro ao salvar ${outPath}: ${e.message}`);
         continue;
@@ -152,12 +163,12 @@ async function processFolder(rootPath) {
       const relSource = path.relative(process.cwd(), file);
       const relOut = path.relative(process.cwd(), outPath);
 
-      if (type === "CONTRACT_TYPE") {
-        if (!index.contracts[name]) index.contracts[name] = [];
-        index.contracts[name].push({ saved: relOut, source: relSource });
-      } else {
+      if (type === "CONTRACT_GROUP") {
         if (!index.groups[name]) index.groups[name] = [];
         index.groups[name].push({ saved: relOut, source: relSource });
+      } else {
+        if (!index.contracts[name]) index.contracts[name] = [];
+        index.contracts[name].push({ saved: relOut, source: relSource });
       }
     }
   }
@@ -171,6 +182,7 @@ async function processFolder(rootPath) {
   console.log(`Índice salvo em: ${indexPath}`);
 }
 
+// Execução CLI
 (async () => {
   const arg = process.argv[2] || ".";
   const full = path.resolve(arg);
