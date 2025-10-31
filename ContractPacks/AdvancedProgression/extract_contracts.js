@@ -1,6 +1,5 @@
 // extract_contracts.js
 // Uso: node extract_contracts.js /caminho/para/pasta
-// Node >= 12
 
 const fs = require("fs").promises;
 const path = require("path");
@@ -26,38 +25,44 @@ async function walkDir(dir) {
   return files;
 }
 
-// Extrai blocos CONTRACT_TYPE e CONTRACT_GROUP com chaves balanceadas
+// Parser robusto de blocos CONTRACT_TYPE / CONTRACT_GROUP
 function extractBlocks(text) {
   const results = [];
-  const regex = /(CONTRACT_TYPE|CONTRACT_GROUP)\s*\{/g;
+  const regex = /(CONTRACT_TYPE|CONTRACT_GROUP)\s*\{/gi;
   let match;
+
   while ((match = regex.exec(text))) {
-    const keyword = match[1];
-    const start = match.index;
-    let i = match.index + match[0].length - 1;
-    let depth = 1;
-    for (; i < text.length; i++) {
+    const type = match[1].toUpperCase();
+    const braceStart = match.index + match[0].indexOf("{");
+    let depth = 0;
+    let endIndex = -1;
+
+    for (let i = braceStart; i < text.length; i++) {
       const ch = text[i];
       if (ch === "{") depth++;
       else if (ch === "}") {
         depth--;
-        if (depth === 0) break;
+        if (depth === 0) {
+          endIndex = i;
+          break;
+        }
       }
     }
-    if (depth === 0) {
-      const block = text.slice(start, i + 1);
-      results.push({ type: keyword, block });
-      regex.lastIndex = i + 1;
-    }
+
+    if (endIndex === -1) continue;
+
+    const block = text.slice(match.index, endIndex + 1);
+    results.push({ type, block });
+    regex.lastIndex = endIndex + 1;
   }
+
   return results;
 }
 
 function extractNameFromBlock(block) {
-  const nameRegex = /name\s*=\s*(?:"([^"]+)"|'([^']+)'|([A-Za-z0-9_.:+\-]+))/i;
+  const nameRegex = /name\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s#{}]+))/i;
   const m = block.match(nameRegex);
-  if (!m) return null;
-  return m[1] || m[2] || m[3];
+  return m ? m[1] || m[2] || m[3] : null;
 }
 
 function makeSafeFilename(name) {
@@ -96,12 +101,15 @@ async function processFolder(rootPath) {
     try {
       content = await fs.readFile(file, "utf8");
     } catch (e) {
-      console.warn(`Erro lendo ${file}: ${e.message}`);
+      console.warn(`⚠️ Erro lendo ${file}: ${e.message}`);
       continue;
     }
 
     const blocks = extractBlocks(content);
-    if (!blocks.length) continue;
+    if (!blocks.length) {
+      console.log(`(nenhum bloco encontrado em ${file})`);
+      continue;
+    }
 
     for (const { type, block } of blocks) {
       let name = extractNameFromBlock(block);
@@ -135,8 +143,9 @@ async function processFolder(rootPath) {
 
       try {
         await fs.writeFile(outPath, block, "utf8");
+        console.log(`✅ Salvo: ${path.relative(process.cwd(), outPath)} (${type}, name="${name}")`);
       } catch (e) {
-        console.warn(`Erro ao salvar ${outPath}: ${e.message}`);
+        console.warn(`⚠️ Erro ao salvar ${outPath}: ${e.message}`);
         continue;
       }
 
@@ -150,14 +159,13 @@ async function processFolder(rootPath) {
         if (!index.groups[name]) index.groups[name] = [];
         index.groups[name].push({ saved: relOut, source: relSource });
       }
-
-      console.log(`Salvo: ${relOut} (${type}, name="${name}")`);
     }
   }
 
   const indexPath = path.join(process.cwd(), "index.json");
   await fs.writeFile(indexPath, JSON.stringify(index, null, 2), "utf8");
-  console.log(`\n✅ Processo concluído!`);
+
+  console.log(`\n🎯 Concluído!`);
   console.log(`Contratos em: ${contractsRoot}`);
   console.log(`Grupos em: ${groupsRoot}`);
   console.log(`Índice salvo em: ${indexPath}`);
